@@ -3,7 +3,7 @@
 // This the constructor and it is called when we create an object
 Bat::Bat(float startX, float startY) {
 	position.x = startX;
-	position.y = startX;
+	position.y = startY;
 
 	//creo una RectShape con setSize
 	batShape.setSize(sf::Vector2f(50, 5));
