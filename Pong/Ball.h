@@ -23,6 +23,7 @@ public:
 	//What happens when the ball hits the bat or the top of the screen ?
 	void reboundBatOrTop();
 	//What happens when the ball hits the bottom of the screen ?
+	//we place the ball back at the top-middle of the screen!
 	void hitBottom();
 	void update();
 };
