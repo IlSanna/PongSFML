@@ -1,30 +1,26 @@
-#include "Ball.h"
-#include "Bat.h"
-#include <sstream>
-
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")//per evitare il pop up della console
+#pragma once
 
 int main() {
 	//create a window
 	int windowsWidth = 512;
 	int windowsHeight = 384;
 
-	sf::RenderWindow window(sf::VideoMode(windowsWidth, windowsHeight), "Pong",sf::Style::None);
+	sf::RenderWindow window(sf::VideoMode(windowsWidth, windowsHeight), "Pong", sf::Style::None);
 	//instaciate game objects
 	Ball ball(windowsWidth / 2, 1);
-	Bat bat(windowsWidth/2, windowsHeight - 20);
+	Bat bat(windowsWidth / 2, windowsHeight - 20);
 
 	//dealing with the hud
 	sf::Text text;
 	sf::Font font;
 	font.loadFromFile("ka1.ttf");
 	text.setFont(font);
-	text.setCharacterSize(28);
+	text.setCharacterSize(32);
 	text.setFillColor(sf::Color::White);
 
 	int score = 0;
 	int lives = 3;
-	
+
 	//main loop
 	while (window.isOpen()) {
 		//PLAYER INPUTS
@@ -69,7 +65,7 @@ int main() {
 			ball.reboundBatOrTop();
 		}
 		//if the bat reach the sides of the screen
-		if (bat.getPosition().left < 0 ) {
+		if (bat.getPosition().left < 0) {
 			bat.moveRight();
 		}
 		if (bat.getPosition().left + 50 > windowsWidth) {
