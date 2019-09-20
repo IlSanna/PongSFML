@@ -9,7 +9,7 @@ int main() {
 	int windowsWidth = 512;
 	int windowsHeight = 384;
 
-	sf::RenderWindow window(sf::VideoMode(windowsWidth, windowsHeight), "Pong");
+	sf::RenderWindow window(sf::VideoMode(windowsWidth, windowsHeight), "Pong",sf::Style::None);
 	//instaciate game objects
 	Ball ball(windowsWidth / 2, 1);
 	Bat bat(windowsWidth/2, windowsHeight - 20);
@@ -19,7 +19,7 @@ int main() {
 	sf::Font font;
 	font.loadFromFile("ka1.ttf");
 	text.setFont(font);
-	text.setCharacterSize(50);
+	text.setCharacterSize(32);
 	text.setFillColor(sf::Color::White);
 
 	int score = 0;
@@ -61,7 +61,7 @@ int main() {
 			score++;
 		}
 		//if the ball hits the sides of the screen, 10 is the ball size in ball.cpp
-		if (ball.getPosition().left < 0 || ball.getPosition().left + 5> windowsWidth) {
+		if (ball.getPosition().left < 0 || ball.getPosition().left + 10> windowsWidth) {
 			ball.reboundSides();
 		}
 		//if the ball intersects the bat
@@ -73,8 +73,9 @@ int main() {
 		bat.update();
 		//update hud
 		std::stringstream ss;
-		ss << "Score:" << score << "    Lives:" << lives;
+		ss << "Score: " << score << "    Lives: " << lives;
 		text.setString(ss.str());
+
 		//LET'S HANDLE THE DRAWINGS
 		window.clear(sf::Color::Black);//clear the previous frame
 		window.draw(bat.getShape());//draw bat
