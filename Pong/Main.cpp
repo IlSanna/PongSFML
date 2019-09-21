@@ -1,7 +1,7 @@
 #include "Ball.h"
 #include "Bat.h"
 #include <sstream>
-
+#include <SFML\Audio.hpp>
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")//per evitare il pop up della console
 
 int main() {
@@ -11,7 +11,7 @@ int main() {
 
 	sf::RenderWindow window(sf::VideoMode(windowsWidth, windowsHeight), "Pong",sf::Style::None);
 	//instaciate game objects
-	Ball ball(windowsWidth / 2, 1);
+	Ball ball(windowsWidth/2 , 1);
 	Bat bat(windowsWidth/2, windowsHeight - 20);
 
 	//dealing with the hud
@@ -24,7 +24,23 @@ int main() {
 
 	int score = 0;
 	int lives = 3;
-	
+
+	//dealing with the audio
+	sf::SoundBuffer buffer1;
+	buffer1.loadFromFile("Audio/bounceNormal.ogg");
+	sf::SoundBuffer buffer2;
+	buffer2.loadFromFile("Audio/bounce.ogg");
+	sf::SoundBuffer buffer3;
+	buffer3.loadFromFile("Audio/out.ogg");
+	sf::Sound normalBounce;
+	normalBounce.setBuffer(buffer1);
+	normalBounce.setVolume(50);
+	sf::Sound out;
+	out.setBuffer(buffer3);
+	out.setVolume(30);
+	sf::Sound bounce;
+	bounce.setBuffer(buffer2);
+
 	//main loop
 	while (window.isOpen()) {
 		//PLAYER INPUTS
@@ -50,23 +66,39 @@ int main() {
 		//if the top position of the ball exceeds the windowsheight->the ball is going out
 		if (ball.getPosition().top > windowsHeight) {
 			ball.hitBottom();
+			out.play();
 			lives--;
 			if (lives < 1) {//player loose,reset the game
+				text.setPosition((windowsWidth / 2) - 100, windowsHeight/2-20);
+				text.setString("YOU LOOSE\n\ny continue...");
+				window.clear(sf::Color::Blue);
+				window.draw(text);//pensare ad una function che loop throug an array and draw each element
+				window.display();
+				while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) {
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+						window.close();
+						return 0;
+					}
+				};
+				text.setPosition(0, 0);
 				score = 0; lives = 3;
 			}
 		}
 		//if the ball hit the top of the screen
 		if (ball.getPosition().top < 0) {
 			ball.reboundBatOrTop();
+			normalBounce.play();
 			score++;
 		}
 		//if the ball hits the sides of the screen, 10 is the ball size in ball.cpp
 		if (ball.getPosition().left < 0 || ball.getPosition().left + 10> windowsWidth) {
 			ball.reboundSides();
+			normalBounce.play();
 		}
 		//if the ball intersects the bat
 		if (ball.getPosition().intersects(bat.getPosition())) {
 			ball.reboundBatOrTop();
+			bounce.play();
 		}
 		//if the bat reach the sides of the screen
 		if (bat.getPosition().left < 0 ) {
@@ -84,7 +116,7 @@ int main() {
 		text.setString(ss.str());
 
 		//LET'S HANDLE THE DRAWINGS
-		window.clear(sf::Color::Black);//clear the previous frame
+		window.clear(sf::Color::Blue);//clear the previous frame
 		window.draw(bat.getShape());//draw bat
 		window.draw(ball.getShape());//draw ball
 		window.draw(text);//draw text
