@@ -20,7 +20,7 @@ void GameOver(sf::RenderWindow &window, sf::Text &text, int windowsWidth,int win
 	score = 0; lives = 3;
 }
 void SetupAudio(sf::SoundBuffer &normalBounceBuffer, sf::SoundBuffer &batBounceBuffer, sf::SoundBuffer &outBuffer,
-	sf::Sound &normalBounceSound, sf::Sound &outSound, sf::Sound &batBounceSound) {
+	sf::Sound &normalBounceSound, sf::Sound &batBounceSound, sf::Sound &outSound) {
 	normalBounceBuffer.loadFromFile("Audio/bounceNormal.ogg");
 	batBounceBuffer.loadFromFile("Audio/bounce.ogg");
 	outBuffer.loadFromFile("Audio/out.ogg");
